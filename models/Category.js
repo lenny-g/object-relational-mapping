@@ -3,24 +3,7 @@ const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../config/connection.js");
 
 const schema = {
-  imdbId: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-  },
-  title: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  genre: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  releaseYear: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  imageUrl: {
+  categoryName: {
     type: DataTypes.STRING,
     allowNull: false,
   },
