@@ -11,18 +11,17 @@ const schema = {
     primaryKey: true,
     autoIncrement: true,
   },
-  product_name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  price: {
-    type: DataTypes.DECIMAL,
-    allowNull: false,
-  },
-  categoryId: {
+  product_id: {
     type: DataTypes.INTEGER,
     references: {
-      model: "category",
+      model: "product",
+      key: "id",
+    },
+  },
+  tag_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: "tag",
       key: "id",
     },
   },
@@ -36,6 +35,6 @@ const options = {
   modelName: "product_tag",
 };
 
-Product.init(schema, options);
+ProductTag.init(schema, options);
 
 module.exports = ProductTag;

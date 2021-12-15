@@ -2,6 +2,8 @@ const { Model, DataTypes } = require("sequelize");
 
 const sequelize = require("../config/connection.js");
 
+class Category extends Model {}
+
 const schema = {
   id: {
     type: DataTypes.INTEGER,
@@ -22,8 +24,6 @@ const options = {
   underscored: true,
   modelName: "category",
 };
-
-class Category extends Model {}
 
 Category.init(schema, options);
 
