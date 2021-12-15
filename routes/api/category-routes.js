@@ -1,6 +1,7 @@
 const { Router } = require("express");
 
 const { Category, Product } = require("../../models");
+
 const {
   getAllCategories,
   getCategoryById,
