@@ -2,60 +2,34 @@ const { Product, Category } = require("../../models");
 
 const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.findAll({
-      include: [
-        {
-          model: Category,
-          attributes: ["category_name"],
-        },
-      ],
+    const productData = await Product.findAll({
+      include: {
+        model: Category,
+      },
     });
-
     return res.json({
       success: true,
-      data: products,
+      productData,
     });
   } catch (error) {
-    console.log(`[ERROR]: Failed to get products - ${error.message}`);
-    return res.status(500).json({
-      success: false,
-      error: error.message,
-    });
+    return res
+      .status(404)
+      .json({ success: false, error: "Failed to get product" });
   }
 };
 
 const getProductById = async (req, res) => {
   try {
-    const { id } = req.params;
-    const product = await Product.findByPk({
-      where: {
-        id: req.params.id,
+    const productData = await Product.findByPk(req.params.id, {
+      include: {
+        model: Category,
       },
-      include: [
-        {
-          model: Category,
-          attributes: ["category_name"],
-        },
-        ,
-      ],
     });
-
-    if (product) {
-      return res.json({
-        success: true,
-        data: product,
-      });
-    }
-    return res.status(404).json({
-      success: false,
-      error: "Product not found",
-    });
+    return res.json({ success: true, productData });
   } catch (error) {
-    console.log(`[ERROR]: Failed to get Product - ${error.message}`);
-    return res.status(500).json({
-      success: false,
-      error: error.message,
-    });
+    return res
+      .status(500)
+      .json({ success: false, error: "Failed to find product ID" });
   }
 };
 
@@ -63,64 +37,54 @@ const createProduct = async (req, res) => {
   try {
     const { product_id, product_name, price, stock, category_id } = req.body;
 
-    const newProduct = await Product.create(req.body);
+    const productData = await Product.create(req.body);
 
     return res.json({
       success: true,
-      data: newProduct,
+      productData,
     });
   } catch (error) {
-    console.log(`[ERROR]: Failed to create product - ${error.message}`);
-    return res.status(500).json({
-      success: false,
-      error: error.message,
-    });
+    return res
+      .status(500)
+      .json({ success: false, error: "Failed to create product" });
   }
 };
 
 const updateProduct = async (req, res) => {
   try {
-    const { id } = req.params;
     const { product_id, product_name, price, stock, category_id } = req.body;
-
-    await Product.update(req.body, {
+    const productData = await Product.update(req.body, {
       where: {
         id: req.params.id,
       },
     });
 
-    const newProduct = await Product.findByPk(id);
-
     return res.json({
       success: true,
-      data: newProduct,
+      productData,
     });
   } catch (error) {
-    console.log(`[ERROR]: Failed to update product - ${error.message}`);
-    return res.status(500).json({
-      success: false,
-      error: error.message,
-    });
+    return res
+      .status(500)
+      .json({ success: false, error: "Failed to update product ID" });
   }
 };
 
 const deleteProductById = async (req, res) => {
   try {
-    const { id } = req.params;
-    await Product.destroy({
+    const productData = await Product.destroy({
       where: {
         id: req.params.id,
       },
     });
     return res.json({
       success: true,
+      productData,
     });
   } catch (error) {
-    console.log(`[ERROR]: Failed to delete product - ${error.message}`);
-    return res.status(500).json({
-      success: false,
-      error: error.message,
-    });
+    return res
+      .status(500)
+      .json({ success: false, error: "Failed to delete product ID" });
   }
 };
 

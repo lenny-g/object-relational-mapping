@@ -2,133 +2,91 @@ const { ProductTag, Product } = require("../../models");
 
 const getAllTags = async (req, res) => {
   try {
-    const tags = await ProductTag.findAll({
-      include: [
-        {
-          model: Product,
-          attributes: ["product_name"],
-        },
-      ],
+    const tagData = await ProductTag.findAll({
+      include: {
+        model: Product,
+      },
     });
 
     return res.json({
       success: true,
-      data: tags,
+      tagData,
     });
   } catch (error) {
-    console.log(`[ERROR]: Failed to get tags - ${error.message}`);
-    return res.status(500).json({
-      success: false,
-      error: error.message,
-    });
+    return res
+      .status(404)
+      .json({ success: false, error: "Failed to find Tags" });
   }
 };
 
 const getTagById = async (req, res) => {
   try {
     const { id } = req.params;
-    const tag = await ProductTag.findByPk({
-      where: {
-        id: req.params.id,
+    const tagData = await ProductTag.findByPk(req.params.id, {
+      include: {
+        model: Product,
       },
-      include: [
-        {
-          model: Product,
-          attributes: ["product_name"],
-        },
-      ],
     });
-
-    if (ProductTag) {
-      return res.json({
-        success: true,
-        data: tag,
-      });
-    }
-    return res.status(404).json({
-      success: false,
-      error: "Tag not found",
+    return res.json({
+      success: true,
+      tagData,
     });
   } catch (error) {
-    console.log(`[ERROR]: Failed to get tag - ${error.message}`);
-    return res.status(500).json({
-      success: false,
-      error: error.message,
-    });
+    return res
+      .status(500)
+      .json({ success: false, error: "Failed to find tag ID" });
   }
 };
 
 const createTag = async (req, res) => {
   try {
-    const { tag_id, tag_name } = req.body;
-
-    const newProductTag = await ProductTag.create({
-      tag_id,
-      tag_name,
+    const tagData = await ProductTag.create({
+      tag_id: req.body.tag_id,
+      tag_name: req.body.tag_name,
     });
 
     return res.json({
       success: true,
-      data: newProductTag,
+      tagData,
     });
   } catch (error) {
-    console.log(`[ERROR]: Failed to create ProductTag - ${error.message}`);
-    return res.status(500).json({
-      success: false,
-      error: error.message,
-    });
+    return res
+      .status(500)
+      .json({ success: false, error: "Failed to create tag" });
   }
 };
 
 const updateTag = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { tag_id, tag_name } = req.body;
-
-    await ProductTag.update(
-      {
-        tag_id,
-        tag_name,
-      },
-      {
-        where: {
-          id: req.params.id,
-        },
-      }
-    );
-
-    const newProductTag = await ProductTag.findByPk(id);
+    const tagData = await ProductTag.update({
+      tag_id: req.body.tag_id,
+      tag_name: req.body.tag_name,
+    });
 
     return res.json({
       success: true,
-      data: newProductTag,
+      tagData,
     });
   } catch (error) {
-    console.log(`[ERROR]: Failed to update tag - ${error.message}`);
-    return res.status(500).json({
-      success: false,
-      error: error.message,
-    });
+    return res.status(500).json({ success: false, error: "Cannot update tag" });
   }
 };
 
 const deleteTagById = async (req, res) => {
   try {
-    const { id } = req.params;
-    await ProductTag.destroy({
+    const tagData = await ProductTag.destroy({
       where: {
         id: req.params.id,
       },
     });
     return res.json({
       success: true,
+      tagData,
     });
   } catch (error) {
-    console.log(`[ERROR]: Failed to delete tag - ${error.message}`);
-    return res.status(500).json({
-      success: false,
-      error: error.message,
-    });
+    return res
+      .status(500)
+      .json({ success: false, error: "Cannot delete tag data" });
   }
 };
 
