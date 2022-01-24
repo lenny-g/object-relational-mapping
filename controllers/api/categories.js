@@ -30,6 +30,7 @@ const getCategoryById = async (req, res) => {
   }
 };
 
+// create a new category
 const createNewCategory = async (req, res) => {
   try {
     const categoryData = await Category.create({
@@ -42,8 +43,8 @@ const createNewCategory = async (req, res) => {
       .json({ success: false, error: "Failed to create category" });
   }
 };
-// create a new category
 
+// update a category by its `id` value
 const updateCategory = async (req, res) => {
   try {
     const categoryData = await Category.update(req.body, {
@@ -59,8 +60,7 @@ const updateCategory = async (req, res) => {
   }
 };
 
-// update a category by its `id` value
-
+// delete a category by its `id` value
 const deleteCategory = async (req, res) => {
   try {
     const categoryData = await Category.destroy({

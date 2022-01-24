@@ -2,11 +2,7 @@ const { ProductTag, Product } = require("../../models");
 
 const getAllTags = async (req, res) => {
   try {
-    const tagData = await ProductTag.findAll({
-      include: {
-        model: Product,
-      },
-    });
+    const tagData = await ProductTag.findAll();
 
     return res.json({
       success: true,
@@ -21,12 +17,7 @@ const getAllTags = async (req, res) => {
 
 const getTagById = async (req, res) => {
   try {
-    const { id } = req.params;
-    const tagData = await ProductTag.findByPk(req.params.id, {
-      include: {
-        model: Product,
-      },
-    });
+    const tagData = await ProductTag.findByPk(req.params.id);
     return res.json({
       success: true,
       tagData,
@@ -40,11 +31,15 @@ const getTagById = async (req, res) => {
 
 const createTag = async (req, res) => {
   try {
+    const { tag_name } = req.body;
     const tagData = await ProductTag.create({
-      tag_id: req.body.tag_id,
-      tag_name: req.body.tag_name,
+      tag_name,
     });
-
+    if (!tag_name) {
+      return res
+        .status(500)
+        .json({ success: false, error: "Need to include tag name" });
+    }
     return res.json({
       success: true,
       tagData,
@@ -58,17 +53,16 @@ const createTag = async (req, res) => {
 
 const updateTag = async (req, res) => {
   try {
-    const tagData = await ProductTag.update({
-      tag_id: req.body.tag_id,
-      tag_name: req.body.tag_name,
+    const tagData = await ProductTag.update(req.body, {
+      where: {
+        id: req.params.id,
+      },
     });
-
-    return res.json({
-      success: true,
-      tagData,
-    });
+    return res.json({ success: true, tagData });
   } catch (error) {
-    return res.status(500).json({ success: false, error: "Cannot update tag" });
+    return res
+      .status(500)
+      .json({ success: false, error: "Cannot update tag by ID" });
   }
 };
 
