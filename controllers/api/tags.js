@@ -1,8 +1,8 @@
-const { ProductTag, Product } = require("../../models");
+const { Tag } = require("../../models");
 
 const getAllTags = async (req, res) => {
   try {
-    const tagData = await ProductTag.findAll();
+    const tagData = await Tag.findAll();
 
     return res.json({
       success: true,
@@ -17,7 +17,7 @@ const getAllTags = async (req, res) => {
 
 const getTagById = async (req, res) => {
   try {
-    const tagData = await ProductTag.findByPk(req.params.id);
+    const tagData = await Tag.findByPk(req.params.id);
     return res.json({
       success: true,
       tagData,
@@ -32,7 +32,7 @@ const getTagById = async (req, res) => {
 const createTag = async (req, res) => {
   try {
     const { tag_name } = req.body;
-    const tagData = await ProductTag.create({
+    const tagData = await Tag.create({
       tag_name,
     });
     if (!tag_name) {
@@ -53,7 +53,7 @@ const createTag = async (req, res) => {
 
 const updateTag = async (req, res) => {
   try {
-    const tagData = await ProductTag.update(req.body, {
+    const tagData = await Tag.update(req.body, {
       where: {
         id: req.params.id,
       },
@@ -68,7 +68,7 @@ const updateTag = async (req, res) => {
 
 const deleteTagById = async (req, res) => {
   try {
-    const tagData = await ProductTag.destroy({
+    const tagData = await Tag.destroy({
       where: {
         id: req.params.id,
       },
