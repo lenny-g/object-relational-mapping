@@ -18,4 +18,4 @@ The object of the project was to build the back end for an e-commerce site by mo
 
 #### This section contains a video link showcasing the usage of this application:
 
-Click [here]() to see a video link of the application
+Click [here](https://drive.google.com/file/d/1mTmzIyMdupw4zJ-U2ZBX7wWFiK6acWk8/view?usp=sharing) to see a video link of the application
